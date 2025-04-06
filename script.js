@@ -3,7 +3,7 @@ let cart = JSON.parse(localStorage.getItem('cart')) || [];
 let cartCount = cart.reduce((total, item) => total + item.quantity, 0);
 let cartTotal = cart.reduce((total, item) => total + item.price * item.quantity, 0);
 
-// DOM Elements
+// DOM Elements (conditionally select based on the current page)
 const cartItemsList = document.getElementById('cart-items');
 const cartCountElement = document.getElementById('cart-count');
 const cartTotalElement = document.getElementById('cart-total');
@@ -43,6 +43,7 @@ function addToCart(event) {
 
   // Update cart UI if on the cart page
   if (cartItemsList) updateCartUI();
+  if (cartCountElement) cartCountElement.textContent = cartCount; // Update cart count in the nav bar
 }
 
 function removeFromCart(productId) {
@@ -58,6 +59,7 @@ function removeFromCart(productId) {
 
     // Update cart UI
     updateCartUI();
+    if (cartCountElement) cartCountElement.textContent = cartCount; // Update cart count in the nav bar
   }
 }
 
@@ -83,6 +85,7 @@ function updateQuantity(productId, newQuantity) {
 
       // Update cart UI
       updateCartUI();
+      if (cartCountElement) cartCountElement.textContent = cartCount; // Update cart count in the nav bar
     }
   }
 }
@@ -137,8 +140,8 @@ function updateCartUI() {
   });
 
   // Update cart count and total
-  cartCountElement.textContent = cartCount;
-  cartTotalElement.textContent = cartTotal.toFixed(2);
+  if (cartCountElement) cartCountElement.textContent = cartCount;
+  if (cartTotalElement) cartTotalElement.textContent = cartTotal.toFixed(2);
 }
 
 // Initialize cart UI when the cart page loads
